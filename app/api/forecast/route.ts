@@ -11,7 +11,7 @@ const apiHeaders = new Headers({
 
 const getForecast = async (lat: string, lng: string) => {
   const result = await fetch(
-    `https://api.met.no/weatherapi/locationforecast/2.0/complete?lat=${lat}&lon=${lng}`,
+    `https://api.met.no/weatherapi/locationforecast/2.0/mini?lat=${lat}&lon=${lng}`,
     {
       method: "GET",
       headers: apiHeaders,
