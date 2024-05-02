@@ -19,8 +19,16 @@ const getForecast = async (lat: string, lng: string) => {
   );
 
   if (result) {
+    const last_modified = result.headers.get("last-modified");
+    const expires = result.headers.get("expires");
+
     const forecast = await result.json();
-    return forecast;
+
+    return {
+      last_modified: last_modified,
+      expires: expires,
+      ...forecast,
+    };
   }
 
   return false;
