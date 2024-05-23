@@ -25,7 +25,8 @@ const getForecast = async (lat: string, lng: string) => {
     const date = result.headers.get("date");
 
     console.log(
-      `Received response. Date: ${date}, last modified: ${last_modified}, expires: ${expires}`
+      `Received response. Date: ${date}, last modified: ${last_modified}, expires: ${expires}`,
+      result
     );
 
     const forecast = await result.json();
