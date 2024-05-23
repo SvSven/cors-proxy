@@ -10,6 +10,7 @@ const apiHeaders = new Headers({
 });
 
 const getForecast = async (lat: string, lng: string) => {
+  console.log(`Fetching forecast for lat: ${lat}, lng: ${lng}`);
   const result = await fetch(
     `https://api.met.no/weatherapi/locationforecast/2.0/mini?lat=${lat}&lon=${lng}`,
     {
@@ -22,6 +23,10 @@ const getForecast = async (lat: string, lng: string) => {
     const last_modified = result.headers.get("last-modified");
     const expires = result.headers.get("expires");
 
+    console.log(
+      `Received response. Last modified: ${last_modified}, expires: ${expires}`
+    );
+
     const forecast = await result.json();
 
     return {
@@ -31,6 +36,8 @@ const getForecast = async (lat: string, lng: string) => {
     };
   }
 
+  console.error("No response from API");
+
   return false;
 };
 
@@ -39,6 +46,7 @@ export async function GET(request: NextRequest) {
   const lng = request.nextUrl.searchParams.get("lng");
 
   if (!lat || !lng) {
+    console.error("Missing search parameters", lat, lng);
     return NextResponse.json(
       { error: "Missing search parameters" },
       { status: 400 }
@@ -48,6 +56,7 @@ export async function GET(request: NextRequest) {
   const forecast = await getForecast(lat, lng);
 
   if (!forecast) {
+    console.error("An error occured while fetching forecast", forecast);
     return NextResponse.json(
       { error: "An error occured while fetching forecast" },
       { status: 500 }
